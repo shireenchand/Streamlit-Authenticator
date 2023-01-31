@@ -303,7 +303,7 @@ class Authenticate:
         if preauthorization:
             self.preauthorized['emails'].remove(email)
 
-    def register_user(self, form_name: str, location: str='main', preauthorization=True) -> bool:
+    def register_user(self, form_name: str, location: str='main', preauthorization=True) -> tuple:
         """
         Creates a password reset widget.
 
@@ -345,12 +345,12 @@ class Authenticate:
                         if preauthorization:
                             if new_email in self.preauthorized['emails']:
                                 self._register_credentials(new_username, new_name, new_password, new_email, preauthorization)
-                                return True
+                                return True, st.session_state['new_username'], st.session_state['new_name'], st.session_state['new_password'], st.session_state['new_email']
                             else:
                                 raise RegisterError('User not preauthorized to register')
                         else:
                             self._register_credentials(new_username, new_name, new_password, new_email, preauthorization)
-                            return True
+                            return True, st.session_state['new_username'], st.session_state['new_name'], st.session_state['new_password'], st.session_state['new_email']
                     else:
                         raise RegisterError('Passwords do not match')
                 else:
